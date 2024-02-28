@@ -1,0 +1,28 @@
+version: '3'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /var/www/html   
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: karim
+      MYSQL_PASSWORD: karim
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
